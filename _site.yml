@@ -9,3 +9,6 @@ navbar:
       href: about.html
     - text: "all things dataviz"
       href: dataviz_index.html
+output:
+  html_document:
+    theme: paper
