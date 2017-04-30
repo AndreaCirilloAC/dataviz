@@ -1,5 +1,21 @@
 ---
-title: "My Website"
+title: "L'ufizio de l'occhio"
+subtitle: "a gentle look to data viz"
 ---
 
-per fare un rosso bello, togli cinabrese o matita o oquria arsa pell'ombre iscure; e pelle più chiare matita o minio e pe' lumi minio solo: poi vela con lacca bella.
+*as more and more data come to us and less less time remain to us*
+
+*effectively visualise those data become crucial*
+
+*that is where data visualisation finds its mission*
+
+data visualisation is a young discipline, but it roots its origins into a glorious past: painting, design, technical design, theory of colors and statistics.
+
+That is why our young lady is so promising and every one is looking at here. Will she be able to meet this high expetations? 
+Some dangerous enemies are coming to the assault, calling her useles consultants crap or making her up with horrible colours and ugly pie charts.
+
+I start from here my help to rescue her, and defend her place into businesses, academics and the age of information.
+
+#posts
+
+[renaissance palette](palette_post.html)

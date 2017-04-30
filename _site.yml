@@ -1,14 +1,14 @@
 name: "my-website"
 output_dir: "."
 navbar:
-  title: "My Website"
+  title: "l'ufizio de l'occhio"
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: about.html
     - text: "all things dataviz"
       href: dataviz_index.html
 output:
   html_document:
     theme: readable
+    toc: true
+    toc_float: true
