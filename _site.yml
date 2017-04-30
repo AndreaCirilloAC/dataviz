@@ -11,4 +11,4 @@ navbar:
       href: dataviz_index.html
 output:
   html_document:
-    theme: paper
+    theme: readable
