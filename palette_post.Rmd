@@ -20,9 +20,19 @@ Those palettes of colours leverages technical studies and centuries of painting 
 I have built them up directly from excellent reproductions of the original painting of those artists and they are freely available.  
 
 ## Leonardo's Palette
-
-<img src="images/vergine_delle_rocce.jpg" height="1000px"/>
+sfumato
+<img src="images/vergine_delle_rocce.jpg" width ="400px"/>
 
 ## Michelangelo's palette
+<img src="images/profeta_daniele.jpg" width ="400px"/>
+<img src="images/aminadab.jpg" width ="400px"/>
+cangiantismo
+
+
 
 ## Raffaello's palette
+unione
+<img src="images/sacra_famiglia_canigiani.jpg" width ="400px"/>
+## how to employ them in ggplot2
+
+http://amitkohli.com/best-way-to-make-a-custom-palette-with-ggplot2/
