@@ -11,3 +11,6 @@ blue_vector          <- as.vector(painting_michelangelo@blue)
 
 data.frame(red_vector,green_vector,blue_vector) %>% 
   unique() -> rgb_triples
+rgb_codes <- rgb(red = rgb_triples[,1],green = rgb_triples[,2], blue = rgb_triples[,3])
+
+show_col(rgb_codes)
