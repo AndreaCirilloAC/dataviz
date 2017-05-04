@@ -1,5 +1,5 @@
 ---
-title: "renaissance palette"
+title: "renaissance palette [WIP]"
 author: "Andrea Cirillo"
 date: "1/5/2017"
 output: html_document
@@ -13,26 +13,45 @@ One of  the aspects have always astonished me have been the great maestria in th
 
 []()
 
-it is of an uncomparable beauty, and is wonderfully esaltato from surrounding colour. Starting from my astonishment I have found myself thinking about proposing what I have called renaissance palettes.
+it is of an uncomparable beauty, and is wonderfully highlighted from surrounding colours. Starting from my astonishment I have found myself thinking about proposing what I have called renaissance palettes.
 
 Those palettes of colours leverages technical studies and centuries of painting practices from the best renaissance painters, offering their sapience to our data viualisation. As we will discover in a few rows, each of the renaissance palettes is studied to be applied to one particular kind of data visualisation.
 
 I have built them up directly from excellent reproductions of the original painting of those artists and they are freely available.  
 
+the three artists I chose are not random one: each of them was the maximum expert of one of the three main painting techniques developed during renaissance period:
+
+- sfumato
+- cangiantismo
+- unione
+
+those three techniques applied to data visualization are powerful allies with different kind of data, as we will say some paragraph below.
+
 ## Leonardo's Palette
-sfumato
+
+master of sfumato
+
 <img src="images/vergine_delle_rocce.jpg" width ="400px"/>
 
 ## Michelangelo's palette
+
+master of cangiantismo
+
 <img src="images/profeta_daniele.jpg" width ="400px"/>
+
 <img src="images/aminadab.jpg" width ="400px"/>
-cangiantismo
+
 
 
 
 ## Raffaello's palette
-unione
+
+master of unione
+
 <img src="images/sacra_famiglia_canigiani.jpg" width ="400px"/>
+
+## palettes use cases
+
+
 ## how to employ them in ggplot2
 
-http://amitkohli.com/best-way-to-make-a-custom-palette-with-ggplot2/
