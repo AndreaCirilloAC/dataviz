@@ -2,7 +2,6 @@ library(dplyr)
 library(jpeg)
 library(ggplot2)
 #read file
-#thanks to https://alstatr.blogspot.it/2014/09/r-k-means-clustering-on-image.html
 painting <- readJPEG("images/profeta_daniele.jpg")
 dimension <- dim(painting)
 painting_rgb <- data.frame(
