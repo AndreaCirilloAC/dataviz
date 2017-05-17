@@ -332,8 +332,26 @@ div.tocify {
 <div id="palettes-use-cases" class="section level2">
 <h2>palettes use cases</h2>
 </div>
+<div id="tech-specs" class="section level2">
+<h2>tech specs</h2>
+<p>palette building is obtained by the mean of a bit of machine learning. to get some more info give a look to the technical post (link al post tecnico che mandi poi anche a MilanoR)</p>
+</div>
 <div id="how-to-employ-them-in-ggplot2" class="section level2">
 <h2>how to employ them in ggplot2</h2>
+<pre class="r"><code>library(devtools)
+library(ggplot2)
+install_github(&quot;andreacirilloac/paletteR&quot;)</code></pre>
+<pre><code>## Skipping install of &#39;paletter&#39; from a github remote, the SHA1 (66780b00) has not changed since last install.
+##   Use `force = TRUE` to force installation</code></pre>
+<pre class="r"><code>library(paletter)
+download.file(&quot;https://andreacirilloac.github.io/dataviz/images/sacra_famiglia_canigiani.jpg&quot;, &quot;image.jpg&quot;)
+colours_vector &lt;- palette_maker(&quot;image.jpg&quot;, number_of_colors = 32)</code></pre>
+<pre><code>## Warning: Quick-TRANSfer stage steps exceeded maximum (= 12397500)</code></pre>
+<p><img src="palette_post_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data = mtcars,aes(x = disp,y = hp, color = rownames(mtcars)))+
+geom_point(stat = &#39;identity&#39;,aes( size = cyl)) +
+scale_color_manual(values = colours_vector)</code></pre>
+<p><img src="palette_post_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
 </div>
 
 

@@ -52,6 +52,21 @@ master of unione
 
 ## palettes use cases
 
+## tech specs
+palette building is obtained by the mean of a bit of machine learning. to get some more info give a look to the technical post (link al post tecnico che mandi poi anche a MilanoR)
 
 ## how to employ them in ggplot2
+```{r}
+library(devtools)
+library(ggplot2)
+install_github("andreacirilloac/paletteR")
+library(paletter)
+download.file("https://andreacirilloac.github.io/dataviz/images/sacra_famiglia_canigiani.jpg", "image.jpg")
+colours_vector <- palette_maker("image.jpg", number_of_colors = 32)
+ggplot(data = mtcars,aes(x = disp,y = hp, color = rownames(mtcars)))+
+geom_point(stat = 'identity',aes( size = cyl)) +
+scale_color_manual(values = colours_vector)
+
+```
+
 
