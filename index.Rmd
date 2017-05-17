@@ -18,4 +18,5 @@ I start from here my help to rescue her, and defend her place into businesses, a
 
 #posts
 
-[renaissance palette (*WIP*)](palette_post.html)
+[renaissance palette (*WIP*)](1_palette_post.html)
+[how to build a color palette from any custom image](2_how_to_build_a_color_palette.html)
