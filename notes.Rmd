@@ -8,3 +8,5 @@ Then it took a photo of the same spine.
 From the photo you wouldn't have undestand that it was a close spine and even that it was a spine.
 This let me understand that movies are better than photographs to understand an object, even if just providing small movement around the object. 
 Moving around the data, could we?
+
+<img src="images/moving_data.png" width ="400px"/>
