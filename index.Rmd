@@ -16,7 +16,10 @@ Some dangerous enemies are coming to the assault, calling her useles consultants
 
 I start from here my help to rescue her, and defend her place into businesses, academics and the age of information.
 
-#posts
+# posts
 
 [renaissance palette (*WIP*)](1_palette_post.html)
+
 [how to build a color palette from any custom image](2_how_to_build_a_color_palette.html)
+
+# [notes and sketches](notes.html)
