@@ -308,17 +308,30 @@ div.tocify {
 </div>
 <div id="what-you-are-going-to-find-here" class="section level2">
 <h2>what you are going to find here</h2>
-<p>the post will give you a clear view of how the task was automated, providing detail of the clustering algorithm employed. It will moreover show you a small R package which was developed to ease the application of this process from other users. Finally use cases for the considered algo will be provided, from the most intuitive ggplot2 employment to the more advanced one. ## behind the scenes: k-nn for image processing I have to be honest: my first thinking when dealing with this task was not the one I am going to show you. I was actually getting lost following a bad path mad of triples of Red Green and Blues, trying to select from frequency tables the most representative ones. But suddenly, after reading a blog post about k-nn algorithm the idea was born: let k-nn divide the picture into homogeneous clusters, having each one a “center” constituted by an RGB triple and from this way define a palett representative of the picture itself.</p>
-<div id="the-k-nn-algorithm" class="section level3">
-<h3>the k-nn algorithm</h3>
+<p>the post will give you a clear view of how the task was automated, providing detail of the clustering algorithm employed. It will moreover show you a small R package which was developed to ease the application of this process from other users. Finally use cases for the considered algo will be provided, from the most intuitive ggplot2 employment to the more advanced one. ## behind the scenes: k-means for image processing I have to be honest: my first thinking when dealing with this task was not the one I am going to show you. I was actually getting lost following a bad path mad of triples of Red Green and Blues, trying to select from frequency tables the most representative ones. But suddenly, after reading a blog post about k-means algorithm the idea was born: let k-means divide the picture into homogeneous clusters, having each one a “center” constituted by an RGB triple and from this way define a palett representative of the picture itself.</p>
+<div id="the-k-means-algorithm" class="section level3">
+<h3>the k-means algorithm</h3>
+<p>to let you maxmismise the fun coming from the rest of the post we have to see here briefly what the k-means clustering algorithm is. This algo is a way to divide a given set of data into k groups/clusters, where k stands for a number, like usually n does. How do we do that? The basic and elegant way behind the algorythm is: measure the difference between data points and lookf or the clusterisation which minimise this difference within clusters. The typical measure employed ere is the euclidean distance, and particularly the <em>squared euclidean distance</em>. We measure with it the distance between points, and we can expand it from 1 to n dimensions. That is why it turns to be effective with such kind of problems where populations can be pertaining to multidimensional spaces. Making it less wordy, let us look at the formula behind the distance. Given two points of a three dimension space <span class="math inline">\(P=(p_{x},p_{y},p_{z})\)</span> and <span class="math inline">\(Q=(q_{x},q_{y},q_{z})\)</span> this distance is measured as the square of the distance between the three couples of coordinates raised to the second:</p>
+<p><span class="math display">\[ {\sqrt  {(p_{x}-q_{x})^{2}+(p_{y}-q_{y})^{2}+(p_{z}-q_{z})^{2}}} \]</span> Now that we know the measure we want to minimize let us have a look at how to find the best possible clusterisation. The typical way adopted from k-means algorithm is working on iterations:</p>
+<ul>
+<li><em>(a)</em>: first iteration randomically assign a cluster to each data point</li>
+<li><em>(b)</em>: then it measure the centroid for every cluster</li>
+<li><em>(c)</em>: change cluster assignation moving each data point to the cluster which have the centroid closer to the data point</li>
+<li><em>(d)</em>: measure the euclidean distance within clusters and sum it up to measure the performance of the given clusterisation</li>
+<li><em>(e)</em>: iterate <em>(b)</em>, <em>(c)</em> and <em>(d)</em> until the last step does not obtain a lower sum of distances.</li>
+</ul>
+<p>You may be wondering what exactly a centroid it. To get it just think it is the barycenter of a given set of point. It is the point which minimise the euclidean distance between him and the other points within the group. for a given set of <span class="math inline">\(n\)</span> points in a $ ^{n} $ space we measure it as follow:</p>
+<p><span class="math display">\[ \mathbf {C} ={\frac {\mathbf {x} _{1}+\mathbf {x} _{2}+\cdots +\mathbf {x} _{n}}{n}} \]</span> Now that we now what a k-means algorithm is, how do we apply it to an image?</p>
 </div>
-<div id="applying-the-k-nn-algorithm-to-an-image" class="section level3">
-<h3>applying the k-nn algorithm to an image</h3>
+<div id="applying-the-k-means-algorithm-to-an-image" class="section level3">
+<h3>applying the k-means algorithm to an image</h3>
+<p>getting a closer look to an image, at least its electronic version, we find it can be decomposed into reasonably small points, each of which is of a single vibrant colour. This is what the pointinists thought a long time before pc’s when started paointing on canvas not meshing their colours in greater or smaller colour fields but as small points one next to the other. take for instance this famous painting from seurat:</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Georges_Seurat_-_Un_dimanche_après-midi_à_l%27île_de_la_Grande_Jatte.jpg" width ="400px"/></p>
 <div id="read-the-image" class="section level4">
 <h4>read the image</h4>
 </div>
-<div id="run-k-nn" class="section level4">
-<h4>run k-nn</h4>
+<div id="run-k-means" class="section level4">
+<h4>run k-means</h4>
 </div>
 </div>
 <div id="dealing-with-results" class="section level3">
@@ -336,8 +349,10 @@ install_github(&quot;andreacirilloac/paletter&quot;)</code></pre>
 <pre><code>## Skipping install of &#39;paletter&#39; from a github remote, the SHA1 (66780b00) has not changed since last install.
 ##   Use `force = TRUE` to force installation</code></pre>
 <p>once you will be done with the installation the actual application of the algo will be even easier, requiring you to run the <em>palette_maker</em> function, which takes as input the path to the picture and the number of colours you are wishing to derive from it:</p>
-<pre class="r"><code>download.file(&quot;https://andreacirilloac.github.io/dataviz/images/sacra_famiglia_canigiani.jpg&quot;, &quot;image.jpg&quot;)
+<pre class="r"><code>library(paletter)
+download.file(&quot;https://andreacirilloac.github.io/dataviz/images/sacra_famiglia_canigiani.jpg&quot;, &quot;image.jpg&quot;)
 colours_vector &lt;- palette_maker(&quot;image.jpg&quot;, number_of_colors = 32)</code></pre>
+<pre><code>## Warning: Quick-TRANSfer stage steps exceeded maximum (= 12397500)</code></pre>
 <p><img src="2_how_to_build_a_color_palette_files/figure-html/palette_maker_example-1.png" width="672" /></p>
 </div>
 <div id="use-cases" class="section level2">
