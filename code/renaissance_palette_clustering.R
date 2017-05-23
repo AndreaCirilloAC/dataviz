@@ -17,8 +17,7 @@ painting_rgb <- data.frame(
 
 n_clusters     <- 32
 k_means        <- kmeans(painting_rgb[,c("R","G","B")], centers = n_clusters, iter.max = 30)
-colours_k      <- rgb(k_means$centers[k_means$cluster,])
-colours_vector <- unique(colours_k)
+colours_vector <- rgb(k_means$centers)
 show_col(colours_vector)
 
 #apply resulting palette
