@@ -75,17 +75,59 @@ download.file("https://andreacirilloac.github.io/dataviz/images/sacra_famiglia_c
 painting     <- readJPEG("image.jpg")
 ```
 
-We now have an object, called painting, composed by a set of triples, where each triple is a combination of Red Green and Blue.
+We now have an object, called painting, composed by a set of triples, where each triple is a combination of Red Green and Blue. It is actually an array, i.e. a multi-dimensional matrix. If you are not familiar with this kind of objects in R you can give a look to the short introduction from Hadley Whickam within [Advanced R](http://adv-r.had.co.nz/Data-structures.html#matrices-and-arrays). Next logical step is to create an object feasible for k-means algorithm application. We therefore derive from the painting object a new data frame, storing x-y coordinates of each point and our beloved triples:
+
+```{r painting_manipulation}
+dimension    <- dim(painting)
+painting_rgb <- data.frame(
+  x = rep(1:dimension[2], each = dimension[1]),
+  y = rep(dimension[1]:1, dimension[2]),
+  R = as.vector(painting[,,1]),
+  G = as.vector(painting[,,2]),
+  B = as.vector(painting[,,3])
+)
+```
+
+just to be sure, let us have a look to the *painting_rgb* object
+
+```{r head_painting}
+head(painting_rgb)
+```
 
 #### run k-means
 
+everything is ready for the show, we are ready to apply k-means algorithm to our data. It is actually really easy to apply this algo in R. As is often the case with R this quite advance algo is already made available within the base R package, made available from through the function *kmeans()*. We just have to pass to the function the dataset over which we want to apply the algo, specifying the number of clusters. We could also specify some other settings, like the maximum number of iterations of above introduced steps *(b)* *(c)* and *(d)*. 
+
+```{r kmeans_running}
+
+n_clusters     <- 32
+k_means        <- kmeans(painting_rgb[,c("R","G","B")], centers = n_clusters, iter.max = 30)
+
+```
+
 ### dealing with results
+
+As you can see we applied the kmeans function passing as dimensions R G and B and a number of clusters equal to 32, which we will see later is not casual. We also specified 30 iterations as the maximum number of loops to try to converge. We now have a *k_means* object, what is its shape? let us investigate this running *str()* on it:
+
+```{r str_kmeans}
+str(k_means)
+```
+
 
 ### show the palette
 
+without analysing every single attribute we can easily locate the *centers* vector, showing the above mentioned centroids. As you would imagine, those centroids have got three dimensions: one for the R, one for the G and one for the B. And those centroids are points whose minimise the distance from the other points within their cluster. So they are RGB triples representative of homogenous clusters of other RGB triples. What do you think, is this enough to be a representative palette? Let us check it in the best possible way, i.e. employing our eyes. To do this we are going to leverage the *show_col()* function from the scales package (once more, thanks to Hadley Whickam):
+
+```{r coulrs_vector}
+colours_vector <- rgb(k_means$centers)
+scales::show_col(colours_vector)
+```
+
+Here it is our freshly and autonomously made palette, which greatly represents the main hues of Raffaello's painting.
+
 ## paletter package to replicate the process
 One of the best gifts the R community gave to me is the tons of packages which helped me with nearly every one of my data mining activity. This is why I often try to translate my code into packages, especially when it contains some functions which could be useful for someone. This I think is the case for the processing steps we have seen before, as we will see later on. 
-For this reason you can find on Github a packge named paletter, which is currently with just one not-so-badly documented function. Paletter is freely available (of course...) and you can install it running the following>
+For this reason you can find on Github a packge named paletter, which is currently with just one not-so-badly documented function. Paletter is freely available (of course...) and you can install it running the following:
 
 ```{r install_paletter}
 library(devtools)
@@ -97,11 +139,36 @@ once you will be done with the installation the actual application of the algo w
 ```{r palette_maker_example}
 library(paletter)
 download.file("https://andreacirilloac.github.io/dataviz/images/sacra_famiglia_canigiani.jpg", "image.jpg")
-colours_vector <- palette_maker("image.jpg", number_of_colors = 32)
+palette_maker("image.jpg", number_of_colors = 32)
 ```
-
+as you see the function results into the palette being printed out and a vector of esadecimal RGB values.
 
 ## use cases
+
+As simple as this idea is it is nevertheless quite a useful one, since it has different possible use cases. The most obvious which comes to mind is to employ this palette within a ggplot plot, and we will see how to do it. Moreover some other more dynamic ideas are exposed below.
+
 ### how to use the palette in ggplot
 
+to employ this palette within a ggplot plot you have to go over the predefined palette coded inside the ggplot() function. To do this you have at your disposal the *scale_colour_manual* function, which allows you to specify a vector of RGB values to employ. We just have to be sure to pass a sufficient number of colours, based on the number of groups we are trying to show. Find below an example of application on the well known *mtcars* data:
+
+```{r mtcars_custom_palette}
+
+ggplot(data = mtcars,aes(x=disp,y = hp, color= rownames(mtcars)))+
+  geom_point(stat = 'identity',aes( size = cyl))+
+  scale_color_manual(values = colours_vector)+
+  theme_minimal()+
+    geom_text(label = rownames(mtcars), color = 'grey40', check_overlap = TRUE)
+
+```
+
+can you see now why we set 32 as number of colours to be drawn from the painting?
+
 ### possible alternative use cases
+
+abstracting from this use case, what we have here? a flexible tool to draw a set of colours from an image. We could employ this in several fields:
+
+- web design: dinamically generate the set of colour to fill web pages based on a main image which should set the tone of all the website
+- graphics: strarting from something defining the graphical identity of a company, for instance a logo or some kind of picture, easily derive a representative palette to be employed on marketing materials and similar stuffs.
+- images placeholder: have you noticed that on google images the actual loading of the picture is preceeded from a coloured square filled with a colour representative of the incoming picture? we could do this with paletter, just specifying 1 when setting the number of colours
+
+Have you got any other idea? Feel free to comment here suggesting further developments or applications.
