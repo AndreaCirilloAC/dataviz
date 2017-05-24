@@ -11,19 +11,22 @@ library(jpeg)
 library(ggplot2)
 ```
 
-# how to build a color palette from any custom image
-## (and yeah, there is a package for that)
+# how to build a color palette from any custom image (and yeah, there is a package for that)
 
-gancio con storia
+some weaks ago, I was working on a dataviz to show results coming from an analysis I had performed, and I found myself looking at that default ggplot2 palette, which is optimal in term of discrimination among categories, but nevertheless can not be compared to some wonderful palettes you can see employed within art masterpieces like Monet [*impression,soleil levant*](https://it.wikipedia.org/wiki/Impressione,_levar_del_sole#/media/File:Monet_-_Impression,_Sunrise.jpg) or Michelangelo's [*Tondo Doni*](https://it.wikipedia.org/wiki/Tondo_Doni#/media/File:Michelangelo_Buonarroti_046.jpg). Those palettes are coming from years and years of studies around colour theory and pittorical tecniques and, I started thinking, would do a great service if employed as plot's palettes, with their complentary colours or their balanced set of hues.
+But, how to do it? The problably most obvious answer would have involved downloading one of these masterpieces, find out a website with point and click colour picking and build a palette from it.
+But I am a lazy programmer and therefore I found an easier way to do it, I found out how to build a color palette from any custom image in R. 
 
-[image comparing point and click website with R code]
+## what you are going to find here
 
-##what you are going to find here
-the post will give you a clear view of how the task was automated, providing detail of the clustering algorithm employed. It will moreover show you a small R package which was developed to ease the application of this process from other users. Finally use cases for the considered algo will be provided, from the most intuitive ggplot2 employment to the more advanced one.
+The post will give you a clear view of how the task was automated, providing detail of the clustering algorithm employed. It will moreover show you a small R package which was developed to ease the application of this process from other users. Finally use cases for the considered algo will be provided, from the most intuitive ggplot2 employment to the more advanced one.
+
 ## behind the scenes: k-means for image processing
-I have to be honest: my first thinking when dealing with this task was not the one I am going to show you. I was actually getting lost following a bad path mad of triples of Red Green and Blues, trying to select from frequency tables the most representative ones. But suddenly, after reading a blog post about k-means algorithm the idea was born: let k-means divide the picture into homogeneous clusters, having each one a "center" constituted by an RGB triple and from this way define a palett representative of the picture itself.
+
+I have to be honest: my first thinking when dealing with this task was not the one I am going to show you. I was actually getting lost following a bad path made of triples of Red Green and Blues, trying to select from frequency tables the most representative ones. But suddenly, after reading a blog post about k-means algorithm the idea was born: let k-means divide the picture into homogeneous clusters, having each one a "center" constituted by an RGB triple and from this way define a palette representative of the picture itself.
 
 ### the k-means algorithm
+
 to let you maxmismise the fun coming from the rest of the post we have to see here briefly what the k-means clustering algorithm is. This algo is a way to divide a given set of data into k groups/clusters, where k stands for a number, like usually n does.
 How do we do that? The basic and elegant way behind the algorythm is: measure the difference between data points and lookf or the clusterisation which minimise this difference within clusters. The typical measure employed ere is the euclidean distance, and particularly the *squared euclidean distance*. We measure with it the distance between points, and we can expand it from 1 to n dimensions. That is why it turns to be effective with such kind of problems where populations can be pertaining to multidimensional spaces. Making it less wordy, let us look at the formula behind the distance. Given two points of a three dimension space $P=(p_{x},p_{y},p_{z})$  and $Q=(q_{x},q_{y},q_{z})$ this distance is measured as the square of the distance between the three couples of coordinates raised to the second:
 
@@ -50,15 +53,15 @@ getting a closer look to an image we find it can be decomposed into reasonably s
 Decomposing an image to its constitutent points is the first needed step to apply on it every kind of statistical, algorithmical or matematical concept. Once this is done, at least within our mind, we have to find a way to identify every single point. This is easily done in the space, since we are dealing with flat images and the good old cartesian x-y couple will be enough.
 But what about colours? we are looking here for a way to derive a palette from every kind of possible image, shouldn't we find a way to "measure" the color o the points? We can resort here to the RGB codification, a convenient way to measure colours firstly introduced during the '800 which become popular during the age of televisions and electronical monitors (you know, they need a way to measur ecolours too).
 
-Following this theory there are three primary additive colours: Red, Green and Blue. Each colour can be therefore be decomposed into a triple of this colours. look for instance at this dark red:
+Following this theory there are three primary additive colours: Red, Green and Blue. Each colour can be therefore be decomposed into a triple of this colours. look for instance at this green:
 
-*image here*
+<img src="https://andreacirilloac.github.io/dataviz/images/green.jpg" width ="200px"/>
 
 following RGB codification scheme we can decompose it as follow:
 
-- Red XX
-- Green XX
-- Blue XX
+- Red 120
+- Green 214
+- Blue 23
 
 as you can see we now have an objective way to measure and describe colours. We can therefore take our picture and describe it as a set of points each of which with a codified colour, in terms of Red Green and Blue. Let us try to do it for real, importing an image into our R environment
 
@@ -153,11 +156,20 @@ to employ this palette within a ggplot plot you have to go over the predefined p
 
 ```{r mtcars_custom_palette}
 
-ggplot(data = mtcars,aes(x=disp,y = hp, color= rownames(mtcars)))+
-  geom_point(stat = 'identity',aes( size = cyl))+
-  scale_color_manual(values = colours_vector)+
-  theme_minimal()+
-    geom_text(label = rownames(mtcars), color = 'grey40', check_overlap = TRUE)
+ggplot(data = mtcars, aes(
+x = disp,
+y = hp,
+color = rownames(mtcars)
+)) +
+geom_point(stat = 'identity', aes(size = cyl)) +
+scale_color_manual(values = colours_vector) +
+theme_minimal() +
+geom_text(label = rownames(mtcars),
+color = 'grey40',
+check_overlap = TRUE) +
+guides(size = FALSE) +
+theme(legend.position = "bottom") +
+labs(title = "disp vs hp")
 
 ```
 
