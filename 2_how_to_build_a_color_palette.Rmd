@@ -12,7 +12,7 @@ library(ggplot2)
 library(scales)
 ```
 
-# how to build a color palette from any custom image (and yeah, there is a package for that)
+# how to build a color palette from any image with R and k-means algo
 
 some weaks ago, I was working on a dataviz to show results coming from an analysis I had performed, and I found myself looking at that default ggplot2 palette, which is optimal in term of discrimination among categories, but nevertheless can not be compared to some wonderful palettes you can see employed within art masterpieces like Monet [*impression,soleil levant*](https://it.wikipedia.org/wiki/Impressione,_levar_del_sole#/media/File:Monet_-_Impression,_Sunrise.jpg) or Michelangelo's [*Tondo Doni*](https://it.wikipedia.org/wiki/Tondo_Doni#/media/File:Michelangelo_Buonarroti_046.jpg). Those palettes are coming from years and years of studies around colour theory and pittorical tecniques and, I started thinking, would do a great service if employed as plot's palettes, with their complentary colours or their balanced set of hues.
 
