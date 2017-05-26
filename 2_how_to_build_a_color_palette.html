@@ -302,18 +302,23 @@ div.tocify {
 <div id="how-to-build-a-color-palette-from-any-custom-image-and-yeah-there-is-a-package-for-that" class="section level1">
 <h1>how to build a color palette from any custom image (and yeah, there is a package for that)</h1>
 <p>some weaks ago, I was working on a dataviz to show results coming from an analysis I had performed, and I found myself looking at that default ggplot2 palette, which is optimal in term of discrimination among categories, but nevertheless can not be compared to some wonderful palettes you can see employed within art masterpieces like Monet <a href="https://it.wikipedia.org/wiki/Impressione,_levar_del_sole#/media/File:Monet_-_Impression,_Sunrise.jpg"><em>impression,soleil levant</em></a> or Michelangelo’s <a href="https://it.wikipedia.org/wiki/Tondo_Doni#/media/File:Michelangelo_Buonarroti_046.jpg"><em>Tondo Doni</em></a>. Those palettes are coming from years and years of studies around colour theory and pittorical tecniques and, I started thinking, would do a great service if employed as plot’s palettes, with their complentary colours or their balanced set of hues.</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Monet_-_Impression%2C_Sunrise.jpg/1200px-Monet_-_Impression%2C_Sunrise.jpg" width ="400px"/></p>
-<p>But, how to do it? The problably most obvious answer would have involved downloading one of these masterpieces, find out a website with point and click colour picking and build a palette from it. But I am a lazy programmer and therefore I found an easier way to do it, I found out how to build a color palette from any custom image in R.</p>
+<figure>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Monet_-_Impression%2C_Sunrise.jpg/1200px-Monet_-_Impression%2C_Sunrise.jpg" width ="400px"/>
+<figcaption>
+impression,soleil levant. Monet
+</figcaption>
+</figure>
+<p>But, how to do it? The problably most obvious answer would have involved downloading one of these masterpieces, find out a website with point and click colour picking featyre and build a palette from it. Nevertheless since I am a lazy programmer I found an easier way to do it, I found out how to build a color palette from any custom image in R.</p>
 <div id="what-you-are-going-to-find-here" class="section level2">
 <h2>what you are going to find here</h2>
-<p>The post will give you a clear view of how the task was automated, providing detail of the clustering algorithm employed. It will moreover show you a small R package which was developed to ease the application of this process from other users. Finally use cases for the considered algo will be provided, from the most intuitive ggplot2 employment to the more advanced one.</p>
+<p>The post will give you a clear view of how the task was automated, providing detail of the clustering algorithm employed. It will moreover show you a small R package which was developed to ease the application of this process from other users. Finally use cases for the developed algo will be provided, from the most intuitive ggplot2 employment to the more advanced one.</p>
 </div>
 <div id="behind-the-scenes-k-means-for-image-processing" class="section level2">
 <h2>behind the scenes: k-means for image processing</h2>
-<p>I have to be honest: my first thinking when dealing with this task was not the one I am going to show you. I was actually getting lost following a bad path made of triples of Red Green and Blues, trying to select from frequency tables the most representative ones. But suddenly, after reading a blog post about k-means algorithm the idea was born: let k-means divide the picture into homogeneous clusters, having each one a “center” constituted by an RGB triple and from this way define a palette representative of the picture itself.</p>
+<p>I have to be honest: my first thinking when dealing with this task was not the one I am going to show you. I was actually getting lost following a bad path made of triples of Red Green and Blues, trying to select from frequency tables the most representative ones. But suddenly, after reading a blog post about k-means algorithm the idea was born: let k-means divide the picture into homogeneous clusters, having each one a “center” constituted by an RGB triple and by this way define a palette representative of the picture itself.</p>
 <div id="the-k-means-algorithm" class="section level3">
 <h3>the k-means algorithm</h3>
-<p>to let you maxmismise the fun coming from the rest of the post we have to see here briefly what the k-means clustering algorithm is. This algo is a way to divide a given set of data into k groups/clusters, where k stands for a number, like usually n does. How do we do that? The basic and elegant idea behind the algorythm is: measure the difference between data points and look for the clusterisation which minimise this difference within clusters. The typical measure employed here is the euclidean distance, and particularly the <em>squared euclidean distance</em>. We measure with it the distance between points, and we can expand it from 1 to n dimensions. That is why it turns to be effective with such kind of problems where populations can be pertaining to multidimensional spaces. Making it less wordy, let us look at the formula behind the distance. Given two points of a three dimension space <span class="math inline">\(P=(p_{x},p_{y},p_{z})\)</span> and <span class="math inline">\(Q=(q_{x},q_{y},q_{z})\)</span> this distance is measured as the square of the distance between the three couples of coordinates raised to the second:</p>
+<p>To let you maxmismise the fun coming from the rest of the post we have to see here briefly what the k-means clustering algorithm is. This algo is a way to divide a given set of data into k homogeneous groups/clusters, where k stands for a number, like usually n does. How do we do that? The basic and elegant idea behind the algorythm is: measure the difference between data points and look for the clusterisation which minimise this difference within clusters. The typical measure employed here is the euclidean distance, and particularly the <em>squared euclidean distance</em>. We measure with it the distance between points, and we can expand it from 1 to n dimensions. That is why it turns to be effective with such kind of problems where populations can be pertaining to multidimensional spaces. Making it less wordy, let us look at the formula behind the distance. Given two points of a three dimension space <span class="math inline">\(P=(p_{x},p_{y},p_{z})\)</span> and <span class="math inline">\(Q=(q_{x},q_{y},q_{z})\)</span> this distance is measured as the square of the distance between the three couples of coordinates raised to the second:</p>
 <p><span class="math display">\[ {\sqrt  {(p_{x}-q_{x})^{2}+(p_{y}-q_{y})^{2}+(p_{z}-q_{z})^{2}}} \]</span> Now that we know the measure we want to minimize let us have a look at how to find the best possible clusterisation. The typical way adopted from k-means algorithm is working on iterations:</p>
 <ul>
 <li><em>(a)</em>: first iteration randomically assigns a cluster to each data point</li>
@@ -323,15 +328,20 @@ div.tocify {
 <li><em>(e)</em>: then the algo iterates <em>(b)</em>, <em>(c)</em> and <em>(d)</em> until the last step does not obtain sum of distances lower than the previous one.</li>
 </ul>
 <p>You may be wondering what exactly a centroid it. To get it just think it is the barycenter of a given set of point. Formally it is the point which minimises the euclidean distance between him and the other points within the group. for a given set of <span class="math inline">\(n\)</span> points in a $ ^{n} $ space we measure it as follow:</p>
-<p><span class="math display">\[ \mathbf {C} ={\frac {\mathbf {x} _{1}+\mathbf {x} _{2}+\cdots +\mathbf {x} _{n}}{n}} \]</span> Now that we now what a k-means algorithm is, how do we apply it to an image?</p>
+<p><span class="math display">\[ \mathbf {C} ={\frac {\mathbf {x} _{1}+\mathbf {x} _{2}+\cdots +\mathbf {x} _{n}}{n}} \]</span> Now that we know what a k-means algorithm is, how do we apply it to an image?</p>
 </div>
 <div id="applying-the-k-means-algorithm-to-an-image" class="section level3">
 <h3>applying the k-means algorithm to an image</h3>
-<p>getting a closer look to an image we find it can be decomposed into reasonably small points, each of which is of a single colour. This is what for instance the pointillisme thought a long time before pc’s. Pointillists started painting on canvas not mixing their colours in greater or smaller colour fields but rather applying them as small points one next to the other. Take for instance this famous painting from Georges Seurat:</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Georges_Seurat_-_Un_dimanche_après-midi_à_l%27île_de_la_Grande_Jatte.jpg" width ="400px"/></p>
+<p>Getting a closer look to an image we find it can be decomposed into reasonably small points, each of which is of a single colour. This is what for instance the pointillisme thought a long time before pc’s. Pointillists started painting on canvas not mixing their colours in greater or smaller colour fields but rather applying them as small points one next to the other. Take for instance this famous painting from Georges Seurat:</p>
+<figure>
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Georges_Seurat_-_Un_dimanche_après-midi_à_l%27île_de_la_Grande_Jatte.jpg" width ="400px"/>
+<figcaption>
+Un dimanche après midi a l’ile de la Grande Jatte. Seurat
+</figcaption>
+</figure>
 <p>Can you see the vibrant small dots?</p>
-<p>Decomposing an image to its constitutent points is the first needed step to apply on it every kind of statistical, algorithmical or matematical concept. Once this is done, at least within our mind, we have to find a way to univocally identify every single point. This is easily done in the space, since we are dealing with flat images and the good old cartesian x-y couple will be enough. But what about colours? We are looking here for a way to derive a palette from every kind of possible image, shouldn’t we find a way to “measure” the color of points? To get this done we will resort here to the RGB codification, a convenient way to measure colours firstly introduced during the ’800 which become popular during the age of televisions and electronical monitors (you know, they need a way to measure colours too).</p>
-<p>Following this theory there are three primary additive colours: Red, Green and Blue. All other colours can be obtained mixing these three colours in different proportions. Each colour can be therefore be decomposed into a triple of this colours. Give a look for instance at this green:</p>
+<p>Decomposing an image to its constitutent points is the first needed step to apply on it every kind of statistical, algorithmical or matematical concept. Once this is done, at least within our mind, we have to find a way to univocally identify every single point. This is easily done in the space, since we are dealing with flat images and the good old cartesian x-y couple will be enough. But what about colours? We are looking here for a way to derive a palette from every kind of possible image, shouldn’t we find a way to “measure” the color of points? To get this done we will resort here to the RGB codification, a convenient way to measure colours firstly introduced during the ’800 which became popular during the age of televisions and electronical monitors (you know, they need a way to measure colours too).</p>
+<p>Following this theory there are three primary additive colours: Red, Green and Blue. All other colours can be obtained mixing these three colours in different proportions. Each colour can be therefore decomposed into a triple of this colours. Give a look for instance at this green:</p>
 <p><img src="https://andreacirilloac.github.io/dataviz/images/green.jpg" width ="200px"/></p>
 <p>following RGB codification scheme we can decompose it as follow:</p>
 <ul>
@@ -342,8 +352,13 @@ div.tocify {
 <p>as you can see we now have an objective way to measure and describe colours. We can therefore take our picture and describe it as a set of points each of which with a codified colour, in terms of Red Green and Blue. Let us try to do it for real, importing an image into our R environment.</p>
 <div id="read-the-image" class="section level4">
 <h4>read the image</h4>
-<p>as is often the case within the R world, we have a package to help us with this task. The jpeg package, developed by <a href="http://urbanek.info">Simon Urbanek</a> provide us functions to import an image and decomposing it into points each of which codified in the terms of the RGB system. This package is . Once the package is installed you can run the <em>readJPEG()</em> function to import and decompose every kind of .jpeg image. within our example we are going to employ the <em>Sacra Famiglia Canigiana</em> painting by Raffaello, which contains a wonderful set of vivid colours coming from Raffaello’s studies on the unione painting technique.</p>
-<p><img src="https://andreacirilloac.github.io/dataviz/images/sacra_famiglia_canigiani.jpg" width ="300px"/></p>
+<p>As is often the case within the R world, we have a package to help us with this task. The jpeg package, developed by <a href="http://urbanek.info">Simon Urbanek</a> provides us functions to import an image and decomposing it into points each of which codified in the terms of the RGB system. Once the package is installed you can run the <em>readJPEG()</em> function to import and decompose every kind of .jpeg image. within our example we are going to employ the <em>Sacra Famiglia Canigiana</em> painting by Raffaello, which contains a wonderful set of vivid colours coming from Raffaello’s studies on the <em>unione</em> painting technique.</p>
+<figure>
+<img src="https://andreacirilloac.github.io/dataviz/images/sacra_famiglia_canigiani.jpg" width ="300px"/>
+<figcaption>
+Sacra famiglia Canigiani. Raffaello
+</figcaption>
+</figure>
 <p>To employ it we have to download it into our environment, which can be easily done via the <em>download.file()</em> function. Once we are done with this we can apply the readJPEG function described above, assigning the result to the <em>painting</em> object:</p>
 <pre class="r"><code>download.file(&quot;https://andreacirilloac.github.io/dataviz/images/sacra_famiglia_canigiani.jpg&quot;, &quot;image.jpg&quot;)
 painting     &lt;- readJPEG(&quot;image.jpg&quot;)</code></pre>
@@ -371,30 +386,29 @@ painting_rgb &lt;- data.frame(
 <h4>run k-means</h4>
 <p>we are now ready to apply k-means algorithm to our data. It is actually really easy to apply this algo in R. As is often the case with R this quite advanced algo is already made available within the base R package, stored within the function conveniently namet function <em>kmeans()</em>. We just have to pass to this function the dataset over which we want to apply the algo, specifying the number of clusters. We could also specify some other settings, like the maximum number of iterations of above introduced steps <em>(b)</em> <em>(c)</em> and <em>(d)</em>.</p>
 <pre class="r"><code>k_means        &lt;- kmeans(painting_rgb[,c(&quot;R&quot;,&quot;G&quot;,&quot;B&quot;)], centers = 20, iter.max = 30)</code></pre>
-<pre><code>## Warning: Quick-TRANSfer stage steps exceeded maximum (= 12397500)</code></pre>
 </div>
 <div id="dealing-with-results" class="section level4">
 <h4>dealing with results</h4>
 <p>As you can see we applied the kmeans function passing as dimensions R G and B and a number of clusters equal to 30. We also specified 30 iterations as the maximum number of loops to try to converge. We now have a <em>k_means</em> object, what is its shape? let us investigate this running <em>str()</em> on it:</p>
 <pre class="r"><code>str(k_means)</code></pre>
 <pre><code>## List of 9
-##  $ cluster     : int [1:247950] 2 2 2 2 2 2 2 2 2 2 ...
-##  $ centers     : num [1:20, 1:3] 0.875 0.833 0.885 0.472 0.841 ...
+##  $ cluster     : int [1:247950] 11 11 11 11 11 11 11 11 11 11 ...
+##  $ centers     : num [1:20, 1:3] 0.574 0.613 0.712 0.881 0.311 ...
 ##   ..- attr(*, &quot;dimnames&quot;)=List of 2
 ##   .. ..$ : chr [1:20] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
 ##   .. ..$ : chr [1:3] &quot;R&quot; &quot;G&quot; &quot;B&quot;
 ##  $ totss       : num 60652
-##  $ withinss    : num [1:20] 49.3 76.4 70.4 59.6 75.9 ...
-##  $ tot.withinss: num 1133
-##  $ betweenss   : num 59518
-##  $ size        : int [1:20] 11121 12629 17485 7699 10992 12331 11858 20287 4945 18899 ...
-##  $ iter        : int 3
-##  $ ifault      : int 4
+##  $ withinss    : num [1:20] 57.7 43 36.7 57.7 55.6 ...
+##  $ tot.withinss: num 1048
+##  $ betweenss   : num 59604
+##  $ size        : int [1:20] 6048 15967 4838 16158 16001 3456 10555 15268 11370 8587 ...
+##  $ iter        : int 8
+##  $ ifault      : int 0
 ##  - attr(*, &quot;class&quot;)= chr &quot;kmeans&quot;</code></pre>
 </div>
 <div id="showing-the-palette" class="section level4">
 <h4>showing the palette</h4>
-<p>without analysing every single attribute we can easily locate the <em>centers</em> vector, showing the above mentioned centroids. As you would imagine, those centroids have got three dimensions: one for the R, one for the G and one for the B. And those centroids are points whose minimise the distance from the other points within their cluster. So they are RGB triples representative of homogenous clusters of other RGB triples. What do you think, is this enough to be a representative palette? Let us check it in the best possible way, i.e. letting our eyes scrutinize them. To do this we are going to leverage the <em>show_col()</em> function from the scales package (once more, thanks to Hadley Whickam):</p>
+<p>without analysing every single attribute we can easily locate the <em>centers</em> vector, showing the above mentioned centroids. As you would imagine, those centroids have got three dimensions: one for the R, one for the G and one for the B. And those centroids are points whose minimise the distance from the other points within their cluster. So they are RGB triples representative of homogenous clusters of other RGB triples composing our image. What do you think, is this enough to be a representative palette? Let us check it in the best possible way, i.e. letting our eyes scrutinize them. To do this we are going to leverage the <em>show_col()</em> function from the scales package (once more, thank you Hadley Whickam):</p>
 <pre class="r"><code>show_col(rgb(k_means$centers))</code></pre>
 <p><img src="2_how_to_build_a_color_palette_files/figure-html/colours_vector-1.png" width="672" /></p>
 <p>Here it is our freshly and autonomously made palette, which greatly represents the main hues of Raffaello’s painting.</p>
@@ -421,7 +435,7 @@ colours_vector &lt;- palette_maker(&quot;image.jpg&quot;, number_of_colors = 32)
 <p>As simple as this idea is it is nevertheless quite a useful one, since it has different possible use cases. The most obvious which comes to mind is to employ this palette within a ggplot plot, and we will see how to do it. Moreover some other more dynamic ideas are exposed below.</p>
 <div id="how-to-use-the-palette-in-ggplot" class="section level3">
 <h3>how to use the palette in ggplot</h3>
-<p>to employ this palette within a ggplot plot you have to go over the predefined palette recalled inside the ggplot() function. To do this you have at your disposal the <em>scale_colour_manual</em> function, which allows you to specify a vector of RGB values to be employed as palette. We just have to be sure to pass a sufficient number of colours, based on the number of groups we are trying to show. Find below an example of application on the well known <em>mtcars</em> data:</p>
+<p>To employ this palette within a ggplot plot you have to go over the predefined palette recalled inside the ggplot() function. To do this you have at your disposal the <em>scale_colour_manual</em> function, which allows you to specify a vector of RGB values to be employed as palette. We just have to be sure to pass a sufficient number of colours, based on the number of groups we are trying to show. Find below an example of application on the well known <em>mtcars</em> data:</p>
 <pre class="r"><code>ggplot(data = mtcars, aes(
 x = disp,
 y = hp,
@@ -437,11 +451,11 @@ guides(size = FALSE) +
 theme(legend.position = &quot;bottom&quot;) +
 labs(title = &quot;disp vs hp&quot;)</code></pre>
 <p><img src="2_how_to_build_a_color_palette_files/figure-html/mtcars_custom_palette-1.png" width="672" /></p>
-<p>can you see now why we set 32 as number of colours to be drawn from the painting? No, ok, just count the number of cars…</p>
+<p>can you see now why we set 32 as number of colours to be drawn from the painting? No? ok, just count the number of cars…</p>
 </div>
 <div id="alternative-use-cases" class="section level3">
 <h3>alternative use cases</h3>
-<p>abstracting from this use case, what we have here? a flexible tool to draw a set of colours from an image. We could employ this in several fields:</p>
+<p>abstracting from this use case, what we have here? a flexible tool to derive a set of representative colours from an image. We could employ this in several fields:</p>
 <ul>
 <li>web design: dinamically generate the set of colour to fill web pages based on a main image which should set the tone of all the website</li>
 <li>graphics: strarting from something defining the graphical identity of a company, for instance a logo or some kind of picture, easily derive a representative palette to be employed on marketing materials and similar stuffs.</li>
