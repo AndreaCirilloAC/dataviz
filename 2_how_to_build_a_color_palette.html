@@ -392,17 +392,17 @@ painting_rgb &lt;- data.frame(
 <p>As you can see we applied the kmeans function passing as dimensions R G and B and a number of clusters equal to 30. We also specified 30 iterations as the maximum number of loops to try to converge. We now have a <em>k_means</em> object, what is its shape? let us investigate this running <em>str()</em> on it:</p>
 <pre class="r"><code>str(k_means)</code></pre>
 <pre><code>## List of 9
-##  $ cluster     : int [1:247950] 13 13 13 13 13 13 13 13 13 13 ...
-##  $ centers     : num [1:20, 1:3] 0.886 0.709 0.151 0.391 0.441 ...
+##  $ cluster     : int [1:247950] 16 16 16 16 16 16 16 16 16 16 ...
+##  $ centers     : num [1:20, 1:3] 0.24 0.165 0.875 0.769 0.54 ...
 ##   ..- attr(*, &quot;dimnames&quot;)=List of 2
 ##   .. ..$ : chr [1:20] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
 ##   .. ..$ : chr [1:3] &quot;R&quot; &quot;G&quot; &quot;B&quot;
 ##  $ totss       : num 60652
-##  $ withinss    : num [1:20] 69.1 38.4 31.8 80.1 39.4 ...
-##  $ tot.withinss: num 1076
-##  $ betweenss   : num 59576
-##  $ size        : int [1:20] 17232 4944 22866 14914 6462 16025 9839 13414 20160 5930 ...
-##  $ iter        : int 9
+##  $ withinss    : num [1:20] 96.2 44.3 43.6 72.5 51.1 ...
+##  $ tot.withinss: num 1068
+##  $ betweenss   : num 59584
+##  $ size        : int [1:20] 21680 24116 10481 9804 7789 16788 10333 9886 12287 4700 ...
+##  $ iter        : int 7
 ##  $ ifault      : int 0
 ##  - attr(*, &quot;class&quot;)= chr &quot;kmeans&quot;</code></pre>
 </div>
@@ -462,6 +462,30 @@ labs(title = &quot;disp vs hp&quot;)</code></pre>
 <li>images placeholder: have you noticed that on google images the actual loading of the picture is preceeded from a coloured square filled with a colour representative of the incoming picture? we could do this with paletter, just specifying 1 when setting the number of colours</li>
 </ul>
 <p>Have you got any other idea? Feel free to comment here suggesting further developments or use cases.</p>
+<div id="disqus_thread">
+
+</div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://lufiziodelocchio.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>
+Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
 </div>
 </div>
 </div>
