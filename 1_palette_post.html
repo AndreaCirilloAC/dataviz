@@ -346,7 +346,6 @@ install_github(&quot;andreacirilloac/paletteR&quot;)</code></pre>
 <pre class="r"><code>library(paletter)
 download.file(&quot;https://andreacirilloac.github.io/dataviz/images/sacra_famiglia_canigiani.jpg&quot;, &quot;image.jpg&quot;)
 colours_vector &lt;- palette_maker(&quot;image.jpg&quot;, number_of_colors = 32)</code></pre>
-<pre><code>## Warning: Quick-TRANSfer stage steps exceeded maximum (= 12397500)</code></pre>
 <p><img src="1_palette_post_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <pre class="r"><code>ggplot(data = mtcars,aes(x = disp,y = hp, color = rownames(mtcars)))+
 geom_point(stat = &#39;identity&#39;,aes( size = cyl)) +

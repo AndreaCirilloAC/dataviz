@@ -299,8 +299,8 @@ div.tocify {
 </div>
 
 
-<div id="how-to-build-a-color-palette-from-any-custom-image-and-yeah-there-is-a-package-for-that" class="section level1">
-<h1>how to build a color palette from any custom image (and yeah, there is a package for that)</h1>
+<div id="how-to-build-a-color-palette-from-any-image-with-r-and-k-means-algo" class="section level1">
+<h1>how to build a color palette from any image with R and k-means algo</h1>
 <p>some weaks ago, I was working on a dataviz to show results coming from an analysis I had performed, and I found myself looking at that default ggplot2 palette, which is optimal in term of discrimination among categories, but nevertheless can not be compared to some wonderful palettes you can see employed within art masterpieces like Monet <a href="https://it.wikipedia.org/wiki/Impressione,_levar_del_sole#/media/File:Monet_-_Impression,_Sunrise.jpg"><em>impression,soleil levant</em></a> or Michelangelo’s <a href="https://it.wikipedia.org/wiki/Tondo_Doni#/media/File:Michelangelo_Buonarroti_046.jpg"><em>Tondo Doni</em></a>. Those palettes are coming from years and years of studies around colour theory and pittorical tecniques and, I started thinking, would do a great service if employed as plot’s palettes, with their complentary colours or their balanced set of hues.</p>
 <figure>
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Monet_-_Impression%2C_Sunrise.jpg/1200px-Monet_-_Impression%2C_Sunrise.jpg" width ="400px"/>
@@ -392,17 +392,17 @@ painting_rgb &lt;- data.frame(
 <p>As you can see we applied the kmeans function passing as dimensions R G and B and a number of clusters equal to 30. We also specified 30 iterations as the maximum number of loops to try to converge. We now have a <em>k_means</em> object, what is its shape? let us investigate this running <em>str()</em> on it:</p>
 <pre class="r"><code>str(k_means)</code></pre>
 <pre><code>## List of 9
-##  $ cluster     : int [1:247950] 11 11 11 11 11 11 11 11 11 11 ...
-##  $ centers     : num [1:20, 1:3] 0.574 0.613 0.712 0.881 0.311 ...
+##  $ cluster     : int [1:247950] 13 13 13 13 13 13 13 13 13 13 ...
+##  $ centers     : num [1:20, 1:3] 0.886 0.709 0.151 0.391 0.441 ...
 ##   ..- attr(*, &quot;dimnames&quot;)=List of 2
 ##   .. ..$ : chr [1:20] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
 ##   .. ..$ : chr [1:3] &quot;R&quot; &quot;G&quot; &quot;B&quot;
 ##  $ totss       : num 60652
-##  $ withinss    : num [1:20] 57.7 43 36.7 57.7 55.6 ...
-##  $ tot.withinss: num 1048
-##  $ betweenss   : num 59604
-##  $ size        : int [1:20] 6048 15967 4838 16158 16001 3456 10555 15268 11370 8587 ...
-##  $ iter        : int 8
+##  $ withinss    : num [1:20] 69.1 38.4 31.8 80.1 39.4 ...
+##  $ tot.withinss: num 1076
+##  $ betweenss   : num 59576
+##  $ size        : int [1:20] 17232 4944 22866 14914 6462 16025 9839 13414 20160 5930 ...
+##  $ iter        : int 9
 ##  $ ifault      : int 0
 ##  - attr(*, &quot;class&quot;)= chr &quot;kmeans&quot;</code></pre>
 </div>
